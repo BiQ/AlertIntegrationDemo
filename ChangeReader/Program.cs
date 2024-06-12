@@ -97,6 +97,8 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                     var createCompanyPayload =
                          JsonConverter.DeserializeContainerAs<CreateCompanyPayload>(ac.Payload);
                     newCustomer.Active = createCompanyPayload?.Active;
+                    newCustomer.CustomerCategoryText = "Enterprise";
+                    newCustomer.LatestChangeIdFromBiQ = ac.Id.ToString();
                     newCustomer.CompositeAddress = createCompanyPayload?.Address?.CompositeOrig;
                     newCustomer.Street = createCompanyPayload?.Address?.Street;
                     newCustomer.StreetCode = createCompanyPayload?.Address?.StreetCode;
@@ -142,6 +144,8 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                     var createPersonPayload =
                         JsonConverter.DeserializeContainerAs<CreatePersonPayload>(ac.Payload);
                     newCustomer.Active = createPersonPayload?.Active;
+                    newCustomer.CustomerCategoryText = "Residential";
+                    newCustomer.LatestChangeIdFromBiQ = ac.Id.ToString();
                     newCustomer.CompositeAddress = createPersonPayload?.Address?.CompositeOrig;
                     newCustomer.Street = createPersonPayload?.Address?.Street;
                     newCustomer.StreetCode = createPersonPayload?.Address?.StreetCode;
@@ -198,6 +202,7 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
             }
                 
             DtoTenant.Customer c = dbCustomer!;
+            c.ChangedAt = ac.Approved;
             c.ChangedBy = ac.ApprovedBy;
             c.LatestChangeIdFromBiQ = ac.Id.ToString();
 
