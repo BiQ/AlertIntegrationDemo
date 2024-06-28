@@ -292,28 +292,28 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                 case "p-number-change":
                     var pNumberChangePayload = 
                         JsonConverter.DeserializeContainerAs<PNumberChangePayload>(ac.Payload);
-                    c.CO = pNumberChangePayload?.ProposedPNumber;
+                    c.PNumber = pNumberChangePayload?.ProposedPNumber;
                     break;
 
                 case "email-change":
                 case "email-change-at-subscription-start":
                     var emailChangePayload = 
                         JsonConverter.DeserializeContainerAs<EmailChangePayload>(ac.Payload);
-                    c.CO = emailChangePayload?.ProposedEmail;
+                    c.Email = emailChangePayload?.ProposedEmail;
                     break;
 
                 case "phone-change":
                 case "phone-change-at-subscription-start":
                     var phoneNumberChangePayload = 
                         JsonConverter.DeserializeContainerAs<PhoneNumberChangePayload>(ac.Payload);
-                    c.CO = phoneNumberChangePayload?.ProposedPhoneNumber;
+                    c.Phone1 = phoneNumberChangePayload?.ProposedPhoneNumber;
                     break;
 
                 case "phone-2-change":
                 case "phone-2-change-at-subscription-start":
                     var phoneNumber2ChangePayload = 
                         JsonConverter.DeserializeContainerAs<PhoneNumberChangePayload>(ac.Payload);
-                    c.CO = phoneNumber2ChangePayload?.ProposedPhoneNumber;
+                    c.Phone2 = phoneNumber2ChangePayload?.ProposedPhoneNumber;
                     break;
 
                 case "new-person":

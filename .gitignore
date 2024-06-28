@@ -263,5 +263,7 @@ __pycache__/
 
 # IDQ 
 **/launchSettings.json
+**/ConfigValues.Preproduction.cs
+**/ConfigValues.Git.cs
 **/ConfigValues.Production.cs
 **/ConfigValues.Test.cs
