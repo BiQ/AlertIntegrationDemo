@@ -60,7 +60,7 @@ Role TEXT NULL
 INSERT INTO Customers 
 (CustomerNumber, Name,            Cvr,       Street, HouseNumber,    Zip,  City,    Active, CustomerCategoryText, Cpr, ChangedAt)
 VALUES 
-('#001', 'The Pizza Company ApS',  '40563350','Sværtegade','11',     '1118','København K',1,'erhverv', null,        '2024-01-02'),
+('10001', 'The Pizza Company ApS',  '40563350','Sværtegade','11',     '1118','København K',1,'erhverv', null,        '2024-01-02'),
 ('2',    'Pico Pizza Nørrebro ApS','39972190','Skyttegade','3',      '2200','København N',1,'erhverv', null,        '2024-01-03'),
 ('00003','Hejls Pizza',            '40639144','Vargårdevej','1',     '6094','Hejls',      1,'erhverv', null,        '2024-01-04'),
 ('00004','Anders A.',              null,      'Paradisæblevej','13', null,  'Andeby',     0,'privat',  null,        '2024-01-05'),

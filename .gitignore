@@ -267,3 +267,5 @@ __pycache__/
 **/ConfigValues.Git.cs
 **/ConfigValues.Production.cs
 **/ConfigValues.Test.cs
+/AlertIntegrationDemo/ConfigValues.Git.cs
+/AlertIntegrationDemo/ConfigValues.Preproduction.cs
