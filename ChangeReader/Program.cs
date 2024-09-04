@@ -53,7 +53,7 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                     }
 
                     Console.WriteLine($"Read {nextApprovedChanges.ApprovedChanges.Count()} changes. New bookmark: {bookmark}");
-                                       
+
                     if (!nextApprovedChanges.More)
                         Task.Delay(TimeSpan.FromMinutes(1)).Wait();// Currently not more - wait a bit
                 }
@@ -65,7 +65,7 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
             }
         }
 
-        
+
         private static HttpClient CreateAlertChangesHttpClient()
         {
             var client = new HttpClient(
@@ -73,9 +73,9 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                     new Uri(ConfigValues.AuthorizationBase!),
                     ConfigValues.ApiKey.ToString(),
                 new HttpClientHandler()))
-                {
-                    BaseAddress = new Uri(ConfigValues.AlertChangesBase)
-                };
+            {
+                BaseAddress = new Uri(ConfigValues.AlertChangesBase)
+            };
             client.DefaultRequestHeaders.Add("Accept", "application/json");
             return client;
         }
@@ -83,7 +83,7 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
         private static void HandleOneChange(ApprovedChange ac)
         {
             // Handle create new
-            if (ac.EventType!.Equals("new-person")|| ac.EventType!.Equals("new-company"))
+            if (ac.EventType!.Equals("new-person") || ac.EventType!.Equals("new-company"))
             {
                 DtoTenant.Customer newCustomer = new()
                 {
@@ -127,19 +127,19 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                     {
                         if (extraDataDictComp.ContainsKey(ConfigValues.extraData1FieldName))
                         {
-                            var extraData1FieldValue = 
+                            var extraData1FieldValue =
                                 (string)extraDataDictComp[ConfigValues.extraData1FieldName];
                             newCustomer.ExtraData1Value = extraData1FieldValue;
                         }
                         if (extraDataDictComp.ContainsKey(ConfigValues.extraData2FieldName))
                         {
-                            var extraData2FieldValue = 
+                            var extraData2FieldValue =
                                 (string)extraDataDictComp[ConfigValues.extraData2FieldName];
                             newCustomer.ExtraData2Value = extraData2FieldValue;
                         }
                     }
                 }
-                else 
+                else
                 {
                     var createPersonPayload =
                         JsonConverter.DeserializeContainerAs<CreatePersonPayload>(ac.Payload);
@@ -192,15 +192,15 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                 CustomerSystem.Db.InsertCustomer(newCustomer);
                 return;
             }
-            
+
             // Handle updates
             var dbCustomer = CustomerSystem.Db.GetCustomer(ac.CustomerNumber);
-            if(dbCustomer is null || string.IsNullOrWhiteSpace(dbCustomer.CustomerNumber))
+            if (dbCustomer is null || string.IsNullOrWhiteSpace(dbCustomer.CustomerNumber))
             {
                 Console.WriteLine($"Received a change for a deleted customer! skipping.");
                 return;
             }
-                
+
             DtoTenant.Customer c = dbCustomer!;
             c.ChangedAt = ac.Approved;
             c.ChangedBy = ac.ApprovedBy;
@@ -222,7 +222,7 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                 case "address-correction":
                 case "address-correction-at-subscription-start":
                 case "address-correction-before-subscription-start":
-                    var addressChangePayload = 
+                    var addressChangePayload =
                         JsonConverter.DeserializeContainerAs<AddressChangePayload>(ac.Payload);
                     c.CompositeAddress = addressChangePayload?.ProposedAddress?.CompositeOrig;
                     c.Street = addressChangePayload?.ProposedAddress?.Street;
@@ -244,7 +244,7 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                 case "name-and-address-change-at-subscription-start":
                 case "name-and-address-correction":
                 case "name-and-address-correction-at-subscription-start":
-                    var nameAndAddressChangePayload = 
+                    var nameAndAddressChangePayload =
                         JsonConverter.DeserializeContainerAs<NameAndAddressChangePayload>(ac.Payload);
                     c.Name = nameAndAddressChangePayload?.ProposedName;
                     c.CompositeAddress = nameAndAddressChangePayload?.ProposedAddress?.CompositeOrig;
@@ -278,40 +278,40 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                     break;
 
                 case "cpr-number-change":
-                    var cprNumberChangePayload = 
+                    var cprNumberChangePayload =
                         JsonConverter.DeserializeContainerAs<CprNumberChangePayload>(ac.Payload);
                     c.Cpr = cprNumberChangePayload?.ProposedCprNumber;
                     break;
 
                 case "cvr-number-change":
-                    var cvrNumberChangePayload = 
+                    var cvrNumberChangePayload =
                         JsonConverter.DeserializeContainerAs<CvrNumberChangePayload>(ac.Payload);
                     c.Cvr = cvrNumberChangePayload?.ProposedCvrNumber;
                     break;
 
                 case "p-number-change":
-                    var pNumberChangePayload = 
+                    var pNumberChangePayload =
                         JsonConverter.DeserializeContainerAs<PNumberChangePayload>(ac.Payload);
                     c.PNumber = pNumberChangePayload?.ProposedPNumber;
                     break;
 
                 case "email-change":
                 case "email-change-at-subscription-start":
-                    var emailChangePayload = 
+                    var emailChangePayload =
                         JsonConverter.DeserializeContainerAs<EmailChangePayload>(ac.Payload);
                     c.Email = emailChangePayload?.ProposedEmail;
                     break;
 
                 case "phone-change":
                 case "phone-change-at-subscription-start":
-                    var phoneNumberChangePayload = 
+                    var phoneNumberChangePayload =
                         JsonConverter.DeserializeContainerAs<PhoneNumberChangePayload>(ac.Payload);
                     c.Phone1 = phoneNumberChangePayload?.ProposedPhoneNumber;
                     break;
 
                 case "phone-2-change":
                 case "phone-2-change-at-subscription-start":
-                    var phoneNumber2ChangePayload = 
+                    var phoneNumber2ChangePayload =
                         JsonConverter.DeserializeContainerAs<PhoneNumberChangePayload>(ac.Payload);
                     c.Phone2 = phoneNumber2ChangePayload?.ProposedPhoneNumber;
                     break;
@@ -322,43 +322,43 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                     return;
 
                 case "secondary-contact-name-change":
-                    var secNameChangePayload = 
+                    var secNameChangePayload =
                         JsonConverter.DeserializeContainerAs<NameChangePayload>(ac.Payload);
                     c.SecondaryName = secNameChangePayload?.ProposedName;
                     break;
 
                 case "secondary-contact-email-change":
-                    var secEmailChangePayload = 
+                    var secEmailChangePayload =
                         JsonConverter.DeserializeContainerAs<EmailChangePayload>(ac.Payload);
                     c.SecondaryEmail = secEmailChangePayload?.ProposedEmail;
                     break;
 
                 case "secondary-contact-cpr-number-change":
-                    var secCprChangePayload = 
+                    var secCprChangePayload =
                         JsonConverter.DeserializeContainerAs<CprNumberChangePayload>(ac.Payload);
                     c.SecondaryCpr = secCprChangePayload?.ProposedCprNumber;
                     break;
 
                 case "secondary-contact-phone-change":
-                    var secPhoneChangePayload = 
+                    var secPhoneChangePayload =
                         JsonConverter.DeserializeContainerAs<PhoneNumberChangePayload>(ac.Payload);
                     c.SecondaryPhone = secPhoneChangePayload?.ProposedPhoneNumber;
                     break;
 
                 case "secondary-contact-phone-2-change":
-                    var secPhone2ChangePayload = 
+                    var secPhone2ChangePayload =
                         JsonConverter.DeserializeContainerAs<PhoneNumberChangePayload>(ac.Payload);
                     c.SecondaryPhone2 = secPhone2ChangePayload?.ProposedPhoneNumber;
                     break;
 
                 case "po-box-change":
-                    var poBoxChangePayload = 
+                    var poBoxChangePayload =
                         JsonConverter.DeserializeContainerAs<PoBoxChangePayload>(ac.Payload);
                     c.PoBox = poBoxChangePayload?.ProposedPoBox;
                     break;
 
                 case "extra-data-change":
-                    var extraDataChangePayload = 
+                    var extraDataChangePayload =
                         JsonConverter.DeserializeContainerAs<ExtraDataChangePayload>(ac.Payload);
                     if (extraDataChangePayload?.ProposedExtraData?.ContainsKey(ConfigValues.extraData1FieldName) ?? false)
                     {
@@ -368,6 +368,12 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                     {
                         c.ExtraData2Value = extraDataChangePayload.ProposedExtraData[ConfigValues.extraData2FieldName].ToString();
                     }
+                    break;
+
+                case "customer-category-change":
+                    var customerCategoryChangePayload =
+                        JsonConverter.DeserializeContainerAs<CustomerCategoryChangePayload>(ac.Payload);
+                    c.CustomerCategoryText = MapCustomerCategory(customerCategoryChangePayload?.ProposedCustomerCategory);
                     break;
 
                 default:
@@ -387,6 +393,17 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
         {
             string jsonString = JsonConverter.Serialize(timestamp);
             File.WriteAllText(bookmarkFileName, jsonString);
+        }
+
+        private static string? MapCustomerCategory(string? customerCategoryText)
+        {
+            if (customerCategoryText is null)
+                return null;
+            else if (customerCategoryText.Equals("Residential"))
+                return "privat";
+            else if (customerCategoryText.Equals("Enterprise"))
+                return "erhverv";
+            return customerCategoryText;
         }
     }
 }
