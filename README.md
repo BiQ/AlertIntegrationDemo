@@ -34,12 +34,18 @@ This proccess should post all new customers to BiQ's customerShadow and put all 
 
 The documentation for the customerShadow API can be found her [customerShadow API](https://alert.biq.dk/swagger-ui/#!/Shadow32Customers/CustomerPostRequesttenantidshadowsourcesshadowsourceidcustomers_Post)
 
+In this demo most of the Shadow Maintainer funtionality is in the file /ShadowWriter/Program.cs
+
 * A Change Reader. 
  
 This process should retrieve approved changes from BiQ and update the customer system accordingly. The proccess shold keep track of which changes has been processed by storing a bookmark or a timestamp.
 
 The documentation for the approvedChanges API can be found her [approvedChanges API](https://alert-changes.biq.dk/swagger-ui/)
 
+In this demo most of the Change Reader funtionality is in the file /ChangeReader/Program.cs
+
 * A Notification Reader.
 
 This process should retrieve notifications from BiQ and take appropriate action on relevant notification types. The proccess shold keep track of which notifications has been processed, by storing a bookmark or a timestamp.
+
+In this demo most of the Notification Reader funtionality is in the file /NotiicationReader/Program.cs
