@@ -5,8 +5,8 @@ namespace BiQ.AlertIntegrationDemo.DtoAlertChanges
 {
     public class ExtraDataChangePayload
     {
-        public IDictionary<string, object>? ExistingExtraData { get; set; }
-        public IDictionary<string, object>? ProposedExtraData { get; set; }
+        public IDictionary<string, string>? ExistingExtraData { get; set; }
+        public IDictionary<string, string>? ProposedExtraData { get; set; }
         public DateTime? ExtraDataChangeDate { get; }
     }
 }

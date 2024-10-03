@@ -20,7 +20,7 @@ namespace BiQ.AlertIntegrationDemo.DtoAlertChanges
         public string? SecondaryContactPhoneNumber2 { get; set;  }
         public string? SecondaryContactCprNumber { get; set; }
         public string? PoBox { get; set; }
-        public IDictionary<string, object>? ExtraData { get; set; }
+        public IDictionary<string, string>? ExtraData { get; set; }
         public string? Active { get; set; }
     }
 }

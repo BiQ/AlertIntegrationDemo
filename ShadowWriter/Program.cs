@@ -124,7 +124,7 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
             return customerCategoryText;
         }
 
-        private static Dictionary<string, object>? MapToShadowExtradata(DtoTenant.Customer dbCustomer)
+        private static Dictionary<string, string>? MapToShadowExtradata(DtoTenant.Customer dbCustomer)
         {
             if (dbCustomer is null)
                 return null;
@@ -134,7 +134,7 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
                 return null;
             else
             {
-                var extradata = new Dictionary<string, object>();
+                var extradata = new Dictionary<string, string>();
                 if (!string.IsNullOrEmpty(dbCustomer.ExtraData1Value))
                     extradata.Add(ConfigValues.extraData1FieldName, dbCustomer.ExtraData1Value);
                 if (!string.IsNullOrEmpty(dbCustomer.ExtraData2Value))
