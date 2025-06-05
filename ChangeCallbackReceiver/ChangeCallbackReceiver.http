@@ -1,0 +1,4 @@
+@ChangeCallbackReceiver_HostAddress = http://localhost:5192
+
+GET {{ChangeCallbackReceiver_HostAddress}}//calback-receiver/20E54A22-E46F-4399-B65E-6EFAB2DE51DB/
+Accept: application/json

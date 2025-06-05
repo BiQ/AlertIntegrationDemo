@@ -22,6 +22,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationReader", "Notif
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerSystemDebug", "CustomerSystemDebug\CustomerSystemDebug.csproj", "{89ED8CBD-F165-480F-B3AE-7B36B3AB43FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChangeCallbackReceiver", "ChangeCallbackReceiver\ChangeCallbackReceiver.csproj", "{C9F6840D-1477-4B02-99AC-F243A88850CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{89ED8CBD-F165-480F-B3AE-7B36B3AB43FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89ED8CBD-F165-480F-B3AE-7B36B3AB43FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89ED8CBD-F165-480F-B3AE-7B36B3AB43FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9F6840D-1477-4B02-99AC-F243A88850CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9F6840D-1477-4B02-99AC-F243A88850CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9F6840D-1477-4B02-99AC-F243A88850CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9F6840D-1477-4B02-99AC-F243A88850CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
