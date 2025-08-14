@@ -1,4 +1,4 @@
-﻿using BiQ.AlertIntegrationDemo.DtoAlertChanges;
+﻿using BiQ.AlertIntegrationDemo.DtoShadow;
 using System.Net.Http.Headers;
 using System.Web;
 
@@ -12,9 +12,10 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
         {
             Console.WriteLine("Starting Shadow maintainer");
             bool initialRun = false;
+            DateTimeOffset lastSyncValidation = DateTimeOffset.Now;
 
             // Test local bookmark storage
-            if(!File.Exists(bookmarkFileName))            
+            if (!File.Exists(bookmarkFileName))
             {
                 // Create a new default bookmark file
                 SaveLocalBookmark(new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero));
@@ -29,14 +30,12 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
                 {
                     // Get changes from customer system
                     var bookmark = ReadLocalBookmark();
-                    var customerNumbers =
-                        CustomerSystem.Db.GetCustomerNumbersFrom(bookmark);
+                    var customerNumbers = CustomerSystem.Db.GetCustomerNumbersFrom(bookmark);
                     foreach (var customerNumber in customerNumbers)
                     {
-                        var dbCustomer = CustomerSystem.Db.GetCustomer(customerNumber);
-                        if (dbCustomer is null) 
+                        var dbCustomer = CustomerSystem.Db.GetCustomer(customerNumber) ??
                             throw new Exception($"Customer deleted midt run! Starting over.");
-                        DtoShadow.Customer shadowCustomer = MapToShadow(dbCustomer);
+                        Customer shadowCustomer = MapToShadow(dbCustomer);
 
                         HttpClient client = CreateShadowHttpClient();
 
@@ -64,7 +63,7 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
                     }
 
                     Console.WriteLine($"Got {customerNumbers.Count} modified customers. New timestamp: {bookmark}");
-                    if (!customerNumbers.Any())
+                    if (customerNumbers.Count == 0)
                         Task.Delay(TimeSpan.FromMinutes(1)).Wait();// Currently not more - wait a minute
                     initialRun = false;
                 }
@@ -73,13 +72,83 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
                     Console.WriteLine($"An exception occurred! ({ex.Message}) - Will try again in 2 minutes.");
                     Task.Delay(TimeSpan.FromMinutes(2)).Wait();
                 }
+
+                //This block runs once a day at 20:00 to make sure the correct customers are in the shadow
+                try
+                {
+                    if (lastSyncValidation < DateTimeOffset.Now)//.AddDays(-1) && DateTimeOffset.Now.Hour > 20)
+                    {
+                        List<string> allLocalCustomersIds = CustomerSystem.Db.GetCustomerNumbersFrom(DateTimeOffset.MinValue);
+                        List<string> allShadowCustomerIds = await GetAllShadowCustomerIds();
+                        foreach (var customerMissingInShadow in allLocalCustomersIds.Except(allShadowCustomerIds))
+                        {
+                            Console.WriteLine($"Customer {customerMissingInShadow} is missing in shadow - will try to add it.");
+                            var dbCustomer = CustomerSystem.Db.GetCustomer(customerMissingInShadow) ??
+                                throw new Exception($"Customer {customerMissingInShadow} deleted mid run! Starting over.");
+                            DtoShadow.Customer shadowCustomer = MapToShadow(dbCustomer);
+                            HttpClient client = CreateShadowHttpClient();
+                            var jsonContent = JsonConverter.Serialize(shadowCustomer);
+                            using var content = new StringContent(jsonContent);
+                            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                            string url = $"/tenants/{ConfigValues.TenantId}/shadowsources/{ConfigValues.ShadowSourceId}/customers";
+                            HttpResponseMessage response = await client.PostAsync(url, content);
+                            response.EnsureSuccessStatusCode();
+                        }
+                        foreach (var shadowCustomerNeedingDeletion in allShadowCustomerIds.Except(allLocalCustomersIds))
+                        {
+                            Console.WriteLine($"Deleted-Customer {shadowCustomerNeedingDeletion} in shadow, should be deleted.");
+                            HttpClient client = CreateShadowHttpClient();
+                            string url = $"/tenants/{ConfigValues.TenantId}/shadowsources/{ConfigValues.ShadowSourceId}/customers/{shadowCustomerNeedingDeletion}";
+                            HttpResponseMessage response = await client.DeleteAsync(url);
+                            response.EnsureSuccessStatusCode();
+                        }
+                        lastSyncValidation = DateTimeOffset.Now;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An exception occurred during daily sync validation! ({ex.Message}) - Will try again in 2 minutes.");
+                    Task.Delay(TimeSpan.FromMinutes(2)).Wait();
+                }
             }
+        }
+
+        private static async Task<List<string>> GetAllShadowCustomerIds()
+        {
+            List<string> customerNumbers = [];
+            HttpClient client = CreateShadowHttpClient();
+            int pageNumber = 0;
+            int pageSize = 100;
+            int totalItems = 0;
+            int readCount = 0;
+            bool readAgain = true;
+            while (readAgain)
+            {
+                string url = $"/tenants/{ConfigValues.TenantId}/customers?page={pageNumber}&pageSize={pageSize}";
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                var page = JsonConverter.DeserializeAs<ShadowCustomersPage>(
+                    await response.Content.ReadAsStringAsync()) ??
+                        throw new Exception("Unable to read shadow customers page.");
+                readCount += page.Customers.Count();
+                totalItems = page.TotalItems;
+                foreach (var customer in page.Customers)
+                {
+                    if (customer.CustomerNumber is null)
+                        throw new Exception("Customer number is null in shadow customer.");
+                    if (customer.ShadowSourceId == ConfigValues.ShadowSourceId)
+                        customerNumbers.Add(customer.CustomerNumber ?? "");
+                }
+                if (totalItems <= readCount)
+                    readAgain = false;
+                pageNumber++;
+            }
+            return customerNumbers;
         }
 
         private static DtoShadow.Customer MapToShadow(DtoTenant.Customer dbCustomer)
         {
-            if (dbCustomer is null)
-                throw new ArgumentNullException(nameof(dbCustomer));
+            ArgumentNullException.ThrowIfNull(dbCustomer);
 
             DtoShadow.Customer customer = new()
             {
@@ -117,9 +186,9 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
         {
             if (customerCategoryText is null)
                 return null;
-            else if (customerCategoryText.Equals("privat")) 
+            else if (customerCategoryText.Equals("privat"))
                 return "Residential";
-            else if (customerCategoryText.Equals("erhverv")) 
+            else if (customerCategoryText.Equals("erhverv"))
                 return "Enterprise";
             return customerCategoryText;
         }
