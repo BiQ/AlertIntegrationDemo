@@ -298,7 +298,7 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
             using var connection = new SqliteConnection(ConfigValues.CustomerSystemConnectionString);
             var result = new List<string>();
             int count = 0;
-            int maxCount = 10;
+            int maxCount = 1000000;
             connection.Open();
             var command = connection.CreateCommand();
             command.CommandText =
