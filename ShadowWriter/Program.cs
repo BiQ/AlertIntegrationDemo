@@ -76,7 +76,7 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
                 //This block runs once a day at 20:00 to make sure the correct customers are in the shadow
                 try
                 {
-                    if (lastSyncValidation < DateTimeOffset.Now)//.AddDays(-1) && DateTimeOffset.Now.Hour > 20)
+                    if (lastSyncValidation < DateTimeOffset.Now.AddDays(-1) && DateTimeOffset.Now.Hour > 20)
                     {
                         List<string> allLocalCustomersIds = CustomerSystem.Db.GetCustomerNumbersFrom(DateTimeOffset.MinValue);
                         List<string> allShadowCustomerIds = await GetAllShadowCustomerIds();
