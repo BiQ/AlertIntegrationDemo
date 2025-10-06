@@ -1,0 +1,10 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "schedule:earlyMondays",
+    "mergeConfidence:all-badges"
+  ],
+  "labels": ["dependencies", "{{categories}}"],
+  "timezone": "Europe/Copenhagen"
+}
