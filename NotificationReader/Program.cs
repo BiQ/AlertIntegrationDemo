@@ -72,11 +72,17 @@ namespace BiQ.AlertIntegrationDemo.NotificationReader
             switch (notif.EventType)
             {
                 case "person-deceased":
-                    Console.WriteLine($"Customer ({notif.CustomerNumber}) has just died!");
+                    var personDeceasedPayload =
+                        JsonConverter.DeserializeContainerAs<PersonDeceasedPayload>(notif.Payload);
+                    Console.WriteLine($"Customer ({notif.CustomerNumber}) has just died!" +
+                        $" - death at: {personDeceasedPayload!.DeceasedDate}");
                     break;
 
                 case "person-formerly-deceased":
-                    Console.WriteLine($"Customer ({notif.CustomerNumber}) is dead!");
+                    var personFormelyDeceasedPayload =
+                        JsonConverter.DeserializeContainerAs<PersonDeceasedPayload>(notif.Payload);
+                    Console.WriteLine($"Customer ({notif.CustomerNumber}) is dead!" +
+                        $" - death at: {personFormelyDeceasedPayload!.DeceasedDate}");
                     break;
 
                 default:
@@ -85,7 +91,7 @@ namespace BiQ.AlertIntegrationDemo.NotificationReader
             }
         }
 
-        
+
         private static HttpClient CreateNotificationHttpClient()
         {
             var client = new HttpClient(
