@@ -66,24 +66,28 @@ By experimenting with each of the pieces, you should be able to develop an intui
 
 You need to implement 3 parts: 
 
-* A Shadow Maintainer. 
+### A Shadow Maintainer 
 
-This proccess should post all new customers to BiQ's customerShadow and put all modified customers to BiQ's customerShadow. The proccess should also delete customers from BiQ's customerShadow when a customer are deleted from the master system. And be able to post all customers to BiQ's customerShadow at integration start or at integration restart.
+* This process should post all new customers from the CRM to BiQ's customerShadow and put all modified customers to BiQ's customerShadow. 
+* The process should also delete customers from BiQ's customerShadow when a customer are deleted from the master CRM system. 
+* It should also be able to post all customers to BiQ's customerShadow at integration start or at integration restart.
 
 The documentation for the customerShadow API can be found her [customerShadow API](https://alert.biq.dk/swagger-ui/#!/Shadow32Customers/CustomerPostRequesttenantidshadowsourcesshadowsourceidcustomers_Post)
 
-In this demo most of the Shadow Maintainer funtionality is in the file /ShadowWriter/Program.cs
+In this demo most of the Shadow Maintainer functionality is in the file [ShadowWriter/Program.cs](ShadowWriter/Program.cs)
 
-* A Change Reader. 
+### A Change Reader 
  
-This process should retrieve approved changes from BiQ and update the customer system accordingly. The proccess shold keep track of which changes has been processed by storing a bookmark or a timestamp.
+* This process should retrieve approved changes from BiQ and update the customer CRM system accordingly. 
+* The process should keep track of which changes has been processed by storing a bookmark or a timestamp.
 
 The documentation for the approvedChanges API can be found her [approvedChanges API](https://alert-changes.biq.dk/swagger-ui/)
 
-In this demo most of the Change Reader funtionality is in the file /ChangeReader/Program.cs
+In this demo most of the Change Reader functionality is in the file [ChangeReader/Program.cs](ChangeReader/Program.cs)
 
-* A Notification Reader.
+### A Notification Reader
 
-This process should retrieve notifications from BiQ and take appropriate action on relevant notification types. The proccess shold keep track of which notifications has been processed, by storing a bookmark or a timestamp.
+* This process should retrieve notifications from BiQ and take appropriate action on relevant notification types. 
+* The process should keep track of which notifications has been processed, by storing a bookmark or a timestamp.
 
-In this demo most of the Notification Reader funtionality is in the file /NotiicationReader/Program.cs
+In this demo most of the Notification Reader functionality is in the file [NoticationReader/Program.cs](NotificationReader/Program.cs)
