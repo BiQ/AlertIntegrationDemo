@@ -79,10 +79,10 @@ namespace BiQ.AlertIntegrationDemo.NotificationReader
                     break;
 
                 case "person-formerly-deceased":
-                    var personFormelyDeceasedPayload =
+                    var personFormerlyDeceasedPayload =
                         JsonConverter.DeserializeContainerAs<PersonDeceasedPayload>(notif.Payload);
                     Console.WriteLine($"Customer ({notif.CustomerNumber}) is dead!" +
-                        $" - date and time of death: {personFormelyDeceasedPayload!.DeceasedDate}");
+                        $" - date and time of death: {personFormerlyDeceasedPayload!.DeceasedDate}");
                     break;
 
                 default:
