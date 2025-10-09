@@ -8,30 +8,22 @@ using System.Threading.Tasks;
 
 namespace BiQ.AlertIntegrationDemo
 {
-    public class BiqAuthenticationHandler : DelegatingHandler
+    public class BiqAuthenticationHandler(
+        Uri authUrl,
+        string apiKey,
+        HttpMessageHandler innerHandler) : DelegatingHandler(innerHandler)
     {
         private readonly SemaphoreSlim semaphoreLock = new(1, 1);
-        private readonly string apiKey;
-        private string accessToken;
+        private readonly string apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
+        private string accessToken = "";
 
-        public BiqAuthenticationHandler(
-            Uri authUrl, 
-            string apiKey, 
-            HttpMessageHandler innerHandler) : base(innerHandler)
-        {
-            AuthUrl = authUrl ?? throw new ArgumentNullException(nameof(authUrl));
-            this.apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
-            this.accessToken = "";
-        }
-
-        public Uri AuthUrl { get; }
+        public Uri AuthUrl { get; } = authUrl ?? throw new ArgumentNullException(nameof(authUrl));
 
         protected override async Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            if (request is null)
-                throw new ArgumentNullException(nameof(request));
+            ArgumentNullException.ThrowIfNull(request);
 
             if (string.IsNullOrWhiteSpace(accessToken))
             {
