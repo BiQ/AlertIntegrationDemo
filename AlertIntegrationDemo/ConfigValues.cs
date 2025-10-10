@@ -8,7 +8,7 @@
 
         public const string ApiKey = "00000000-0000-0000-0000-000000000000";
 
-        public const string CustomerSystemConnectionString = "Data Source=C:/temp/Idq.IntegrationDemo/AlertIntegrationDemo/CustomerSystem/customersystem.db";
+        public const string CustomerSystemConnectionString = "Data Source=customersystem.db";
 
         public const string AuthorizationBase = "https://preprod.search-auth.biq.dk/api/auth/login";
 
