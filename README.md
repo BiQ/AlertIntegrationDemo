@@ -21,7 +21,7 @@ A demo Visual Studio Solution for integration with BiQ CustomerShadow and AlertC
 It is a minimal solution for 2-way integration, only the most common fields are used.
 
 ## Getting Started with the demo
-1. Get an API-key, `tenantId` and `shadowSourceId` from your contact person at BiQ. Write them into the [ConfigValues.cs](AlertIntegrationDemo/ConfigValues.cs) file.
+1. Look up an API-key, `tenantId` and `shadowSourceId` at the [Web UI settings page](https://preprod.search.biq.dk/settings/about). Write them into the [ConfigValues.cs](AlertIntegrationDemo/ConfigValues.cs) file.
 2. Run CustomerSystemInitializer, our fake CRM; this creates a SQLite database in a file. There is just one table: `Customers` and it is populated with 5 test customers.
    ```
    $ dotnet run --project CustomerSystemInitializer
