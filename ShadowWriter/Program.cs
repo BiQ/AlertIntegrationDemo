@@ -170,12 +170,9 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
                     Cpr = dbCustomer.Cpr,
                     Cvr = dbCustomer.Cvr,
                     PNr = dbCustomer.PNumber,
-                    PoBox = dbCustomer.PoBox,
                     CareOf = dbCustomer.CO,
-                    Attention = dbCustomer.Attention,
                     Address = MapToShadowAddress(dbCustomer)
                 },
-                Contact2 = MapToShadowContact2(dbCustomer),
                 ExtraData = MapToShadowExtradata(dbCustomer),
             };
 
@@ -210,28 +207,6 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
                     extradata.Add(ConfigValues.extraData2FieldName, dbCustomer.ExtraData2Value);
                 return extradata;
             }
-        }
-
-        private static DtoShadow.Contact? MapToShadowContact2(DtoTenant.Customer dbCustomer)
-        {
-            if (dbCustomer is null)
-                return null;
-
-            if (string.IsNullOrEmpty(dbCustomer.SecondaryName) &&
-                string.IsNullOrEmpty(dbCustomer.SecondaryPhone) &&
-                string.IsNullOrEmpty(dbCustomer.SecondaryPhone2) &&
-                string.IsNullOrEmpty(dbCustomer.SecondaryEmail) &&
-                string.IsNullOrEmpty(dbCustomer.SecondaryCpr))
-                return null;
-            else
-                return new()
-                {
-                    Name = dbCustomer.SecondaryName,
-                    Phone1 = dbCustomer.SecondaryPhone,
-                    Phone2 = dbCustomer.SecondaryPhone2,
-                    Email = dbCustomer.SecondaryEmail,
-                    Cpr = dbCustomer.SecondaryCpr
-                };
         }
 
         private static DtoShadow.Address? MapToShadowAddress(DtoTenant.Customer dbCustomer)

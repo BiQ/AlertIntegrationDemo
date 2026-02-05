@@ -13,7 +13,6 @@ namespace BiQ.AlertIntegrationDemo.DtoShadow
         public string? CustomerCategoryText { get; set; } 
         public Dictionary<string, string>? ExtraData { get; set; }
         public Contact? Contact1 { get; set; }
-        public Contact? Contact2 { get; set; }
         public string? AssociatedApprovedChange { get; set; }
         public string? MasterSystemDeepLink { get; set; }
         public string? Active { get; set; }
