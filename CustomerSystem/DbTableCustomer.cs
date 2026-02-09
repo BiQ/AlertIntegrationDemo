@@ -19,8 +19,6 @@
         public string? Email { get; set; }
         public string? BirthDay { get; set; }
         public string? CO { get; set; }
-        public string? Attention { get; set; }
-        public string? PoBox { get; set; }
         public string? CompositeAddress { get; set; }
         public string? Street { get; set; }
         public string? StreetCode { get; set; }
@@ -35,11 +33,6 @@
         public string? Country { get; set; }
         public string? CountryCode { get; set; }
         public string? MunicipalityCode { get; set; }
-        public string? SecondaryName { get; set; }
-        public string? SecondaryCpr { get; set; }
-        public string? SecondaryPhone { get; set; }
-        public string? SecondaryPhone2 { get; set; }
-        public string? SecondaryEmail { get; set; }
         public string? Role { get; set; }
         public string? CreatedAs { get; set; }
 

@@ -24,7 +24,6 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
                 LatestChangeIdFromBiQ = ReadNullableString(reader, "LatestChangeIdFromBiQ"),
                 Name = ReadNullableString(reader, "Name"),
                 CustomerNumber = customerNumber,
-                Attention = ReadNullableString(reader, "Attention"),
                 CO = ReadNullableString(reader, "CO"),
                 Cpr = ReadNullableString(reader, "Cpr"),
                 BirthDay = ReadNullableString(reader, "BirthDay"),
@@ -47,12 +46,6 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
                 Country = ReadNullableString(reader, "Country"),
                 CountryCode = ReadNullableString(reader, "CountryCode"),
                 MunicipalityCode = ReadNullableString(reader, "MunicipalityCode"),
-                SecondaryName = ReadNullableString(reader, "SecondaryName"),
-                SecondaryCpr = ReadNullableString(reader, "SecondaryCpr"),
-                SecondaryPhone = ReadNullableString(reader, "SecondaryPhone"),
-                SecondaryPhone2 = ReadNullableString(reader, "SecondaryPhone2"),
-                SecondaryEmail = ReadNullableString(reader, "SecondaryEmail"),
-                PoBox = ReadNullableString(reader, "PoBox"),
                 ChangedBy = ReadNullableString(reader, "ChangedBy"),
                 ChangedAt = ReadNullableDateTimeOffset(reader, "ChangedAt")!.Value,
                 CreatedAt = ReadNullableDateTimeOffset(reader, "CreatedAt"),
@@ -76,7 +69,6 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
                 ChangedAt = @ChangedAt,
                 ChangedBy = @ChangedBy,
                 City = @City,
-                Attention = @Attention,
                 CO = @CO,
                 CompositeAddress = @CompositeAddress,
                 Country = @Country,
@@ -96,13 +88,7 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
                 Phone1 = @Phone1,
                 Phone2 = @Phone2,
                 PNumber = @PNumber,
-                PoBox = @PoBox,
                 Role = @Role,
-                SecondaryCpr = @SecondaryCpr,
-                SecondaryEmail = @SecondaryEmail,
-                SecondaryName = @SecondaryName,  
-                SecondaryPhone = @SecondaryPhone,
-                SecondaryPhone2 = @SecondaryPhone2,
                 Street = @Street,
                 StreetCode = @StreetCode,
                 SubCity = @SubCity,
@@ -115,7 +101,6 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
             command.Parameters.AddWithValue("@ChangedAt", DateTimeOffset.Now);
             command.Parameters.AddWithValue("@ChangedBy", HandleNull(customer.ChangedBy));
             command.Parameters.AddWithValue("@City", HandleNull(customer.City));
-            command.Parameters.AddWithValue("@Attention", HandleNull(customer.Attention));
             command.Parameters.AddWithValue("@CO", HandleNull(customer.CO));
             command.Parameters.AddWithValue("@CompositeAddress", HandleNull(customer.CompositeAddress));
             command.Parameters.AddWithValue("@Country", HandleNull(customer.Country));
@@ -135,13 +120,7 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
             command.Parameters.AddWithValue("@Phone1", HandleNull(customer.Phone1));
             command.Parameters.AddWithValue("@Phone2", HandleNull(customer.Phone2));
             command.Parameters.AddWithValue("@PNumber", HandleNull(customer.PNumber));
-            command.Parameters.AddWithValue("@PoBox", HandleNull(customer.PoBox));
             command.Parameters.AddWithValue("@Role", HandleNull(customer.ExtraData2Value));
-            command.Parameters.AddWithValue("@SecondaryCpr", HandleNull(customer.SecondaryCpr));
-            command.Parameters.AddWithValue("@SecondaryEmail", HandleNull(customer.SecondaryEmail));
-            command.Parameters.AddWithValue("@SecondaryName", HandleNull(customer.SecondaryName));
-            command.Parameters.AddWithValue("@SecondaryPhone", HandleNull(customer.SecondaryPhone));
-            command.Parameters.AddWithValue("@SecondaryPhone2", HandleNull(customer.SecondaryPhone2));
             command.Parameters.AddWithValue("@Street", HandleNull(customer.Street));
             command.Parameters.AddWithValue("@StreetCode", HandleNull(customer.StreetCode));
             command.Parameters.AddWithValue("@SubCity", HandleNull(customer.SubCity));
@@ -164,13 +143,11 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
                 CustomerCategoryText,
                 LatestChangeIdFromBiQ,
                 Name,
-                Attention,
                 CO,
                 Cpr,
                 BirthDay,
                 CompositeAddress ,
                 Cvr,
-
                 PNumber,
                 Phone1,
                 Phone2,
@@ -181,7 +158,6 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
                 HouseLetter,
                 Floor,
                 Suite,
-
                 City,
                 Zip,
                 SubCity,
@@ -189,13 +165,6 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
                 Country,
                 CountryCode,  
                 MunicipalityCode,
-                SecondaryName,  
-                SecondaryCpr,
-                SecondaryPhone,
-
-                SecondaryPhone2,
-                SecondaryEmail,
-                PoBox,
                 ChangedBy,
                 ChangedAt,
                 CreatedAt,
@@ -209,13 +178,11 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
                 @CustomerCategoryText,
                 @LatestChangeIdFromBiQ,
                 @Name,
-                @Attention,
                 @CO,
                 @Cpr,
                 @BirthDay,
                 @CompositeAddress,
                 @Cvr,
-
                 @PNumber,
                 @Phone1,
                 @Phone2,
@@ -226,7 +193,6 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
                 @HouseLetter,
                 @Floor,
                 @Suite,
-
                 @City,
                 @Zip,
                 @SubCity,
@@ -234,13 +200,6 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
                 @Country,
                 @CountryCode,  
                 @MunicipalityCode,
-                @SecondaryName,  
-                @SecondaryCpr,
-                @SecondaryPhone,
-
-                @SecondaryPhone2,
-                @SecondaryEmail,
-                @PoBox,
                 @ChangedBy,
                 @ChangedAt,
                 @CreatedAt,
@@ -252,14 +211,12 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
             command.Parameters.AddWithValue("@CustomerCategoryText", HandleNull(customer.CustomerCategoryText));
             command.Parameters.AddWithValue("@LatestChangeIdFromBiQ", HandleNull(customer.LatestChangeIdFromBiQ));            
             command.Parameters.AddWithValue("@Name", HandleNull(customer.Name));
-            command.Parameters.AddWithValue("@Attention", HandleNull(customer.Attention));
             command.Parameters.AddWithValue("@CO", HandleNull(customer.CO));
             command.Parameters.AddWithValue("@Cpr", HandleNull(customer.Cpr));
             command.Parameters.AddWithValue("@BirthDay", HandleNull(customer.BirthDay));
             command.Parameters.AddWithValue("@CompositeAddress", HandleNull(customer.CompositeAddress));
             command.Parameters.AddWithValue("@Cvr", HandleNull(customer.Cvr));
             command.Parameters.AddWithValue("@PNumber", HandleNull(customer.PNumber));
-
             command.Parameters.AddWithValue("@Phone1", HandleNull(customer.Phone1));
             command.Parameters.AddWithValue("@Phone2", HandleNull(customer.Phone2));
             command.Parameters.AddWithValue("@Email", HandleNull(customer.Email));
@@ -269,7 +226,6 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
             command.Parameters.AddWithValue("@HouseLetter", HandleNull(customer.HouseLetter));
             command.Parameters.AddWithValue("@Floor", HandleNull(customer.Floor));
             command.Parameters.AddWithValue("@Suite", HandleNull(customer.Suite));
-
             command.Parameters.AddWithValue("@City", HandleNull(customer.City));
             command.Parameters.AddWithValue("@Zip", HandleNull(customer.Zip));
             command.Parameters.AddWithValue("@SubCity", HandleNull(customer.SubCity));
@@ -277,13 +233,6 @@ namespace BiQ.AlertIntegrationDemo.CustomerSystem
             command.Parameters.AddWithValue("@Country", HandleNull(customer.Country));
             command.Parameters.AddWithValue("@CountryCode", HandleNull(customer.CountryCode));
             command.Parameters.AddWithValue("@MunicipalityCode", HandleNull(customer.MunicipalityCode));
-            command.Parameters.AddWithValue("@SecondaryName", HandleNull(customer.SecondaryName));
-            command.Parameters.AddWithValue("@SecondaryCpr", HandleNull(customer.SecondaryCpr));
-            command.Parameters.AddWithValue("@SecondaryPhone", HandleNull(customer.SecondaryPhone));
-
-            command.Parameters.AddWithValue("@SecondaryPhone2", HandleNull(customer.SecondaryPhone2));
-            command.Parameters.AddWithValue("@SecondaryEmail", HandleNull(customer.SecondaryEmail));
-            command.Parameters.AddWithValue("@PoBox", HandleNull(customer.PoBox));
             command.Parameters.AddWithValue("@ChangedBy", HandleNull(customer.ChangedBy));
             command.Parameters.AddWithValue("@ChangedAt", now);
             command.Parameters.AddWithValue("@CreatedAt", now);

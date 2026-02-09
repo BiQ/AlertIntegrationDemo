@@ -114,14 +114,12 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                     newCustomer.Floor = createCompanyPayload?.Address?.Floor;
                     newCustomer.Suite = createCompanyPayload?.Address?.Suite;
                     newCustomer.CO = createCompanyPayload?.CareOf;
-                    newCustomer.Attention = createCompanyPayload?.Attention;
                     newCustomer.Cvr = createCompanyPayload?.Cvr;
                     newCustomer.PNumber = createCompanyPayload?.Pnr;
                     newCustomer.Email = createCompanyPayload?.Email;
                     newCustomer.Name = createCompanyPayload?.Name;
                     newCustomer.Phone1 = createCompanyPayload?.Phone1;
                     newCustomer.Phone2 = createCompanyPayload?.Phone2;
-                    newCustomer.PoBox = createCompanyPayload?.PoBox;
                     var extraDataDictComp = createCompanyPayload?.ExtraData;
                     if (extraDataDictComp is not null)
                     {
@@ -162,18 +160,11 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                     newCustomer.Suite = createPersonPayload?.Address?.Suite;
                     newCustomer.BirthDay = createPersonPayload?.BirthDate.ToString();
                     newCustomer.CO = createPersonPayload?.CareOf;
-                    newCustomer.Attention = createPersonPayload?.Attention;
                     newCustomer.Cpr = createPersonPayload?.Cpr;
                     newCustomer.Email = createPersonPayload?.Email;
                     newCustomer.Name = createPersonPayload?.Name;
                     newCustomer.Phone1 = createPersonPayload?.Phone1;
                     newCustomer.Phone2 = createPersonPayload?.Phone2;
-                    newCustomer.PoBox = createPersonPayload?.PoBox;
-                    newCustomer.SecondaryCpr = createPersonPayload?.SecondaryContactCprNumber;
-                    newCustomer.SecondaryEmail = createPersonPayload?.SecondaryContactEmail;
-                    newCustomer.SecondaryName = createPersonPayload?.SecondaryContactName;
-                    newCustomer.SecondaryPhone = createPersonPayload?.SecondaryContactPhoneNumber1;
-                    newCustomer.SecondaryPhone2 = createPersonPayload?.SecondaryContactPhoneNumber2;
                     var extraDataDictPers = createPersonPayload?.ExtraData;
                     if (extraDataDictPers is not null)
                     {
@@ -270,31 +261,6 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                     c.CO = careOfChangePayload?.ProposedCareOf;
                     break;
 
-                case "attention-change":
-                case "attention-at-subscription-start":
-                    var attentionChangePayload =
-                        JsonConverter.DeserializeContainerAs<AttentionChangePayload>(ac.Payload);
-                    c.Attention = attentionChangePayload?.ProposedAttention;
-                    break;
-
-                case "cpr-number-change":
-                    var cprNumberChangePayload =
-                        JsonConverter.DeserializeContainerAs<CprNumberChangePayload>(ac.Payload);
-                    c.Cpr = cprNumberChangePayload?.ProposedCprNumber;
-                    break;
-
-                case "cvr-number-change":
-                    var cvrNumberChangePayload =
-                        JsonConverter.DeserializeContainerAs<CvrNumberChangePayload>(ac.Payload);
-                    c.Cvr = cvrNumberChangePayload?.ProposedCvrNumber;
-                    break;
-
-                case "p-number-change":
-                    var pNumberChangePayload =
-                        JsonConverter.DeserializeContainerAs<PNumberChangePayload>(ac.Payload);
-                    c.PNumber = pNumberChangePayload?.ProposedPNumber;
-                    break;
-
                 case "email-change":
                 case "email-change-at-subscription-start":
                     var emailChangePayload =
@@ -309,53 +275,10 @@ namespace BiQ.AlertIntegrationDemo.ChangeReader
                     c.Phone1 = phoneNumberChangePayload?.ProposedPhoneNumber;
                     break;
 
-                case "phone-2-change":
-                case "phone-2-change-at-subscription-start":
-                    var phoneNumber2ChangePayload =
-                        JsonConverter.DeserializeContainerAs<PhoneNumberChangePayload>(ac.Payload);
-                    c.Phone2 = phoneNumber2ChangePayload?.ProposedPhoneNumber;
-                    break;
-
                 case "new-person":
                 case "new-company":
                     // Handled elsewhere
                     return;
-
-                case "secondary-contact-name-change":
-                    var secNameChangePayload =
-                        JsonConverter.DeserializeContainerAs<NameChangePayload>(ac.Payload);
-                    c.SecondaryName = secNameChangePayload?.ProposedName;
-                    break;
-
-                case "secondary-contact-email-change":
-                    var secEmailChangePayload =
-                        JsonConverter.DeserializeContainerAs<EmailChangePayload>(ac.Payload);
-                    c.SecondaryEmail = secEmailChangePayload?.ProposedEmail;
-                    break;
-
-                case "secondary-contact-cpr-number-change":
-                    var secCprChangePayload =
-                        JsonConverter.DeserializeContainerAs<CprNumberChangePayload>(ac.Payload);
-                    c.SecondaryCpr = secCprChangePayload?.ProposedCprNumber;
-                    break;
-
-                case "secondary-contact-phone-change":
-                    var secPhoneChangePayload =
-                        JsonConverter.DeserializeContainerAs<PhoneNumberChangePayload>(ac.Payload);
-                    c.SecondaryPhone = secPhoneChangePayload?.ProposedPhoneNumber;
-                    break;
-
-                case "secondary-contact-phone-2-change":
-                    var secPhone2ChangePayload =
-                        JsonConverter.DeserializeContainerAs<PhoneNumberChangePayload>(ac.Payload);
-                    c.SecondaryPhone2 = secPhone2ChangePayload?.ProposedPhoneNumber;
-                    break;
-
-                case "po-box-change":
-                    var poBoxChangePayload =
-                        JsonConverter.DeserializeContainerAs<PoBoxChangePayload>(ac.Payload);
-                    c.PoBox = poBoxChangePayload?.ProposedPoBox;
-                    break;
 
                 case "extra-data-change":
                     var extraDataChangePayload =
