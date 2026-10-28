@@ -78,8 +78,11 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
                 {
                     if (lastSyncValidation.AddDays(1).Date.AddHours(20) < DateTimeOffset.Now)
                     {
+                        Console.WriteLine("Maintainer.");
                         List<string> allLocalCustomersIds = CustomerSystem.Db.GetCustomerNumbersFrom(DateTimeOffset.MinValue);
+                        Console.WriteLine($"Local customer count: {allLocalCustomersIds.Count}");
                         List<string> allShadowCustomerIds = await GetAllShadowCustomerIds();
+                        Console.WriteLine($"Shadow customer count: {allShadowCustomerIds.Count}");
                         foreach (var customerMissingInShadow in allLocalCustomersIds.Except(allShadowCustomerIds))
                         {
                             Console.WriteLine($"Customer {customerMissingInShadow} is missing in shadow - will try to add it.");
@@ -94,6 +97,7 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
                             HttpResponseMessage response = await client.PostAsync(url, content);
                             response.EnsureSuccessStatusCode();
                         }
+                        int deleteCount = 0;
                         foreach (var shadowCustomerNeedingDeletion in allShadowCustomerIds.Except(allLocalCustomersIds))
                         {
                             Console.WriteLine($"Deleted-Customer {shadowCustomerNeedingDeletion} in shadow, should be deleted.");
@@ -101,6 +105,11 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
                             string url = $"/tenants/{ConfigValues.TenantId}/shadowsources/{ConfigValues.ShadowSourceId}/customers/{shadowCustomerNeedingDeletion}";
                             HttpResponseMessage response = await client.DeleteAsync(url);
                             response.EnsureSuccessStatusCode();
+                            deleteCount++;
+                            if (deleteCount % 100 == 0)
+                            {
+                                Console.WriteLine($"Deleted {deleteCount} customers so far...");
+                            }
                         }
                         lastSyncValidation = DateTimeOffset.Now;
                     }
@@ -118,7 +127,7 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
             List<string> customerNumbers = [];
             HttpClient client = CreateShadowHttpClient();
             int pageNumber = 0;
-            int pageSize = 100;
+            int pageSize = 5000;
             int totalItems = 0;
             int readCount = 0;
             bool readAgain = true;
@@ -142,6 +151,7 @@ namespace BiQ.AlertIntegrationDemo.ShadowWriter
                 if (totalItems <= readCount)
                     readAgain = false;
                 pageNumber++;
+                Console.WriteLine($"Read page {pageNumber} from shadow with page size: {pageSize}.");
             }
             return customerNumbers;
         }
