@@ -9,18 +9,20 @@ _Code examples for 3rd party developers integrating to the [BiQ Alert](https://b
 - BiQ Alert is now able to notify the customer CRM automatically of important changes to their users.
 - Manually or automatically accepted changes are reflected automatically in the customer CRM.
 
-## Functionality
+## Functionality of this demo
 
 - Maintaining a shadow database of the customer CRM at BiQ
 - Retrieving updates to the customer CRM from BiQ
 - Retrieving notifications about customer changes from BiQ
 
 ## Introduction 
+
 A demo Visual Studio Solution for integration with BiQ CustomerShadow and AlertChanges API
 
 It is a minimal solution for 2-way integration, only the most common fields are used.
 
 ## Getting Started with the demo
+
 1. Look up an API-key, `tenantId` and `shadowSourceId` at the [Web UI settings page](https://preprod.search.biq.dk/settings/about). Write them into the [ConfigValues.cs](AlertIntegrationDemo/ConfigValues.cs) file.
 2. Run CustomerSystemInitializer, our fake CRM; this creates a SQLite database in a file. There is just one table: `Customers` and it is populated with 5 test customers.
    ```
