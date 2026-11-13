@@ -42,7 +42,7 @@ jobs:
       run: echo "No relevant files changed. Skipping build."
     - name: Setup .NET
       if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.build == 'true'
-      uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
+      uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
       with:
         # Kept in sync with .tool-versions by Renovate (see renovate.json)
         # renovate: datasource=dotnet-version depName=dotnet-sdk
