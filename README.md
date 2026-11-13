@@ -31,8 +31,8 @@ It is a minimal solution for 2-way integration, only the most common fields are 
    You can see the customers in the "CRM" like this:
    ```
    $ echo "select * from customers" | sqlite3 customersystem.db
-   10001||2024-01-02|||erhverv||The Pizza Company ApS|1||40563350||||||||||Sværtegade||11||||København K|1118||||||||||||
-   2||2024-01-03|||erhverv||Pico Pizza Nørrebro ApS|1||39972190||||||||||Skyttegade||3||||København N|2200||||||||||||
+   10001||2024-01-02|||erhverv||The Pizza Company ApS|1||40563350||||||||Sværtegade||11||||København K|1118|||||||
+   2||2024-01-03|||erhverv||Pico Pizza Nørrebro ApS|1||39972190||||||||Skyttegade||3||||København N|2200|||||||
    ...snip...
    ```
 3. Start ShadowWriter. This will send all (5) customers to CustomerShadow at BiQ, and it will keep posting updates to CustomerShadow when the customers in the dummy customer system are modified. Keep this running.
