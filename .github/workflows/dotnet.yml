@@ -44,7 +44,8 @@ jobs:
       if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.build == 'true'
       uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
       with:
-        # Keep in sync with .tool-versions
+        # Kept in sync with .tool-versions by Renovate (see renovate.json)
+        # renovate: datasource=dotnet-version depName=dotnet-sdk
         dotnet-version: "8.0.414"
     - name: Restore dependencies
       if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.build == 'true'
