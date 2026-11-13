@@ -1,0 +1,55 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+    - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+    - name: Check for relevant changes
+      id: changes
+      if: github.event_name != 'workflow_dispatch'
+      uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
+      with:
+        # Compare pushes with the previous branch tip; PRs use GitHub's changed-file list.
+        base: ${{ github.event_name == 'push' && github.ref || '' }}
+        filters: |
+          build:
+            - '.github/workflows/dotnet.yml'
+            - '.tool-versions'
+            - '**/*.cs'
+            - '**/*.csproj'
+            - '*.sln'
+    - name: Skip build for unrelated changes
+      if: github.event_name != 'workflow_dispatch' && steps.changes.outputs.build == 'false'
+      run: echo "No relevant files changed. Skipping build."
+    - name: Setup .NET
+      if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.build == 'true'
+      uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
+      with:
+        # Kept in sync with .tool-versions by Renovate (see renovate.json)
+        # renovate: datasource=dotnet-version depName=dotnet-sdk
+        dotnet-version: "8.0.414"
+    - name: Restore dependencies
+      if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.build == 'true'
+      run: dotnet restore
+    - name: Build
+      if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.build == 'true'
+      run: dotnet build --no-restore --warnaserror

@@ -6,5 +6,22 @@
     "mergeConfidence:all-badges"
   ],
   "labels": ["dependencies", "{{categories}}"],
-  "timezone": "Europe/Copenhagen"
+  "timezone": "Europe/Copenhagen",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update the .NET SDK set for actions/setup-dotnet in workflows",
+      "managerFilePatterns": ["/^\\.github/workflows/[^/]+\\.ya?ml$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+dotnet-version:\\s*\"?(?<currentValue>[^\"\\s]+)\"?"
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Bump the .NET SDK in .tool-versions and in the CI workflow in the same PR",
+      "groupName": ".NET SDK",
+      "matchDatasources": ["dotnet-version"]
+    }
+  ]
 }
