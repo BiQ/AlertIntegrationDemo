@@ -37,9 +37,11 @@ jobs:
             - '**/*.cs'
             - '**/*.csproj'
             - '*.sln'
+            - 'README.md'
+            - 'tests/**'
     - name: Skip build for unrelated changes
       if: github.event_name != 'workflow_dispatch' && steps.changes.outputs.build == 'false'
-      run: echo "No relevant files changed. Skipping build."
+      run: echo "No relevant files changed. Skipping build and README guide."
     - name: Setup .NET
       if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.build == 'true'
       uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
@@ -53,3 +55,6 @@ jobs:
     - name: Build
       if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.build == 'true'
       run: dotnet build --no-restore --warnaserror
+    - name: Walk the README guide
+      if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.build == 'true'
+      run: tests/readme-guide.sh
